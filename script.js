@@ -1,46 +1,40 @@
-function userCreator(name, score) {
-    const newUser = Object.create(userFunctions);
-    newUser.name = name;
-    newUser.score = score;
-    return newUser;
-}
-
-userFunctions = {
-    increaseScore: function() {
+class userCreator {
+    constructor(name, score) {  
+        this.name = name;
+        this.score = score;
+    }
+    login () {
+        console.log("you've been logged in, " + this.name)
+        }   
+    increaseScore () {
         this.score++
-    },
-    greet: function(){
-        console.log('hi ' + this.name);
+        }
+}
+
+
+
+class paidUserCreator extends userCreator {
+    constructor(paidName, paidScore, accountBalance) {
+        super(paidName, paidScore)
+        this.accountBalance = accountBalance
+    }
+    increaseAccountBalance () {
+        this.accountBalance++
     }
 }
 
-function paidUser(paidName, paidScore, accountBalance){
-    const newPaidUser = userCreator(paidName, paidScore); //right now proto is pointing at userFuntions
-    Object.setPrototypeOf(newPaidUser, paidUserFunctions); // changes proto to paidUserFunction
-    newPaidUser.accountBalance = accountBalance; // not sure about this one 
-    return newPaidUser;
-}
 
-paidUserFunctions = {
-    changeAccountBalance: function() {
-        this.accountBalance *= 2;
-    }
-}
+const user1 = new userCreator("Oli", 2);
 
-Object.setPrototypeOf(paidUserFunctions, userFunctions) // sets paidUserFunction's prototype chain to look up to userFunctions
+console.log(user1);
+user1.login();
+//
 
-
-var user1 = userCreator("oli", 2);
-
-var user2 = paidUser("seba", 5, 100);
+const user2 = new paidUserCreator("Seba", 1, 100);
 console.log(user2);
 
-user2.changeAccountBalance();
-user2.greet();
+user2.increaseScore();
 console.log(user2);
 
-
-//user1.greet;
-//subclassing with factory functions
-//add paidUser class that has the same properites and functions of UserCreator 
-//with its own parameters of 'paidName', 'paidScore', 'accountBalance' and increaseBalance method
+user2.increaseAccountBalance();
+console.log(user2);
